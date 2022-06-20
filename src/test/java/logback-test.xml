@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE xml>
+<configuration debug="false" scan="true" scanPeriod="10 seconds">
+
+	<appender name="stdout" class="ch.qos.logback.core.ConsoleAppender">
+		<encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+			<pattern>%date{HH:mm:ss.SSS} %1.-1level [%thread] %logger - %msg%n</pattern>
+		</encoder>
+	</appender>
+
+	<logger name="net.pennix" additivity="false">
+		<level value="TRACE" />
+		<appender-ref ref="stdout" />
+	</logger>
+
+	<root level="INFO" additivity="false">
+		<appender-ref ref="stdout" />
+	</root>
+</configuration>
