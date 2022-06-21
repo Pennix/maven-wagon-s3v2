@@ -71,10 +71,6 @@ So I made this to fully utilize awssdk capabilities -- any config method support
 
 # ChangeLog Release Notes
 
-## v1.0.1
-
-* fix gpg signing problem
-
-## v1.0.0
+## v1.0.2
 
 * initial release
