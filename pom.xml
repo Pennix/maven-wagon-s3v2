@@ -3,7 +3,7 @@
 
 	<groupId>net.pennix</groupId>
 	<artifactId>maven-wagon-s3v2</artifactId>
-	<version>1.0.2-SNAPSHOT</version>
+	<version>1.0.2</version>
 	<packaging>jar</packaging>
 
 	<name>${project.groupId}:${project.artifactId}</name>
@@ -28,7 +28,7 @@
 		<url>https://github.com/Pennix/maven-wagon-s3v2</url>
 		<connection>scm:git:git://github.com/Pennix/maven-wagon-s3v2.git</connection>
 		<developerConnection>scm:git:ssh://git@github.com/Pennix/maven-wagon-s3v2.git</developerConnection>
-		<tag>HEAD</tag>
+		<tag>maven-wagon-s3v2-1.0.2</tag>
 	</scm>
 
 	<distributionManagement>
