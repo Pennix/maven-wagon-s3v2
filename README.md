@@ -18,7 +18,7 @@ So I made this to fully utilize awssdk capabilities -- any config method support
 			<groupId>net.pennix</groupId>
 			<artifactId>maven-wagon-s3v2</artifactId>
 			<!-- NOTE: change this to the most recent release version from the repo -->
-			<version>1.0.0</version>
+			<version>1.0.1</version>
 		</extension>
 	</extensions>
 </build>
@@ -70,6 +70,10 @@ So I made this to fully utilize awssdk capabilities -- any config method support
 ```
 
 # ChangeLog Release Notes
+
+## v1.0.1
+
+* fix gpg signing problem
 
 ## v1.0.0
 
