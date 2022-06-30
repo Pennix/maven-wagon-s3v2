@@ -124,6 +124,7 @@ public class S3v2Wagon extends AbstractWagon {
 	@Override
 	public void closeConnection(
 	) {
-		client.close();
+		if (client != null)
+			client.close();
 	}
 }
