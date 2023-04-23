@@ -1,8 +1,12 @@
 package net.pennix.maven.wagon;
 
+import static java.io.File.separatorChar;
+import static java.util.stream.Collectors.joining;
+import static java.util.stream.StreamSupport.stream;
 import static org.apache.maven.wagon.events.TransferEvent.REQUEST_GET;
 import static org.apache.maven.wagon.events.TransferEvent.REQUEST_PUT;
 import static org.apache.maven.wagon.events.TransferEvent.TRANSFER_PROGRESS;
+import static software.amazon.awssdk.core.sync.RequestBody.fromInputStream;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -22,7 +26,6 @@ import org.apache.maven.wagon.events.TransferEvent;
 import org.apache.maven.wagon.repository.Repository;
 import org.apache.maven.wagon.resource.Resource;
 
-import software.amazon.awssdk.core.sync.RequestBody;
 import software.amazon.awssdk.services.s3.S3Client;
 import software.amazon.awssdk.services.s3.model.GetObjectRequest;
 import software.amazon.awssdk.services.s3.model.HeadObjectRequest;
@@ -101,10 +104,14 @@ public class S3v2Wagon extends AbstractWagon {
 			File source,
 			String destination
 	) throws TransferFailedException, ResourceDoesNotExistException, AuthorizationException {
-		Path key = Paths.get(baseDir, destination);
-		key = Paths.get("/").relativize(key);
+		Path path = Paths.get(baseDir, destination);
+		path = path.getRoot().relativize(path);
 
-		PutObjectRequest request = PutObjectRequest.builder().bucket(bucket).key(key.toString()).build();
+		String key = path.toString();
+		if ('\\' == separatorChar)
+			key = stream(path.spliterator(), false).map(Path::toString).collect(joining("/"));
+
+		PutObjectRequest request = PutObjectRequest.builder().bucket(bucket).key(key).build();
 
 		Resource resource = new Resource(destination);
 		firePutInitiated(resource, source);
@@ -112,7 +119,7 @@ public class S3v2Wagon extends AbstractWagon {
 		firePutStarted(resource, source);
 		TransferEvent event = new TransferEvent(this, resource, TRANSFER_PROGRESS, REQUEST_PUT);
 		try (InputStream in = new MonitorInputStream(source, getTransferEventSupport(), event)) {
-			this.client.putObject(request, RequestBody.fromInputStream(in, source.length()));
+			this.client.putObject(request, fromInputStream(in, source.length()));
 		} catch (FileNotFoundException e) {
 			throw new ResourceDoesNotExistException(e.toString(), e);
 		} catch (IOException e) {
